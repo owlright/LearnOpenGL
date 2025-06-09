@@ -5,7 +5,8 @@ find_package(OpenGL REQUIRED)
 find_package(GLFW3 REQUIRED)
 find_package(glog REQUIRED)
 
+include_directories(include/)
+link_libraries(OpenGL::GL glfw glog::glog)
 
-add_executable(learn-opengl main.cpp src/glad/glad.c)
-target_include_directories(learn-opengl PRIVATE include/)
-target_link_libraries(learn-opengl OpenGL::GL glfw glog::glog)
+add_executable(1_1_helloworld src/1_getting_started/1_1_helloworld.cpp src/glad/glad.c)
+
