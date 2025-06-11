@@ -57,5 +57,44 @@ GLFWwindow* GlfwCreateWindow(int width, int height)
     return window;
 }
 
+unsigned int CompileShader(GLenum shaderType, const char* shaderSource)
+{
+    unsigned int shader = glCreateShader(shaderType);
+    glShaderSource(shader, 1, &shaderSource, nullptr);
+    glCompileShader(shader);
+
+    int success;
+    char infoLog[512];
+    glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
+    if (!success) {
+        glGetShaderInfoLog(shader, 512, nullptr, infoLog);
+        LOG(ERROR) << "ERROR::SHADER::COMPILATION_FAILED\n" << infoLog;
+    }
+    return shader;
+}
+
+unsigned int CreateShaderProgram(const char* vertexShaderSource, const char* fragmentShaderSource)
+{
+    unsigned int vertexShader = CompileShader(GL_VERTEX_SHADER, vertexShaderSource);
+    unsigned int fragmentShader = CompileShader(GL_FRAGMENT_SHADER, fragmentShaderSource);
+
+    unsigned int shaderProgram = glCreateProgram();
+    glAttachShader(shaderProgram, vertexShader);
+    glAttachShader(shaderProgram, fragmentShader);
+    glLinkProgram(shaderProgram);
+
+    int success;
+    char infoLog[512];
+    glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
+    if (!success) {
+        glGetProgramInfoLog(shaderProgram, 512, nullptr, infoLog);
+        LOG(ERROR) << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog;
+    }
+
+    glDeleteShader(vertexShader);
+    glDeleteShader(fragmentShader);
+
+    return shaderProgram;
+}
 
 }

@@ -11,5 +11,6 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
 void GlfwInit();
 GLFWwindow* GlfwCreateWindow(int width, int height);
-
+unsigned int CompileShader(GLenum shaderType, const char* shaderSource);
+unsigned int CreateShaderProgram(const char* vertexShaderSource, const char* fragmentShaderSource);
 }
